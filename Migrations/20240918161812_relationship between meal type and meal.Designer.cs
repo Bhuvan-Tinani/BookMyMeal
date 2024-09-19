@@ -4,6 +4,7 @@ using BookMyMeal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookMyMeal.Migrations
 {
     [DbContext(typeof(BookMyMealDbContext))]
-    partial class BookMyMealDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240918161812_relationship between meal type and meal")]
+    partial class relationshipbetweenmealtypeandmeal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,38 +144,6 @@ namespace BookMyMeal.Migrations
                     b.ToTable("MealTypes");
                 });
 
-            modelBuilder.Entity("BookMyMeal.Models.Domain.Menu", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Menu");
-                });
-
-            modelBuilder.Entity("MealMenu", b =>
-                {
-                    b.Property<int>("MealsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Menusid")
-                        .HasColumnType("int");
-
-                    b.HasKey("MealsId", "Menusid");
-
-                    b.HasIndex("Menusid");
-
-                    b.ToTable("MealMenu");
-                });
-
             modelBuilder.Entity("BookMyMeal.Models.Domain.Employee", b =>
                 {
                     b.HasOne("BookMyMeal.Models.Domain.Department", "Department")
@@ -194,21 +164,6 @@ namespace BookMyMeal.Migrations
                         .IsRequired();
 
                     b.Navigation("mealType");
-                });
-
-            modelBuilder.Entity("MealMenu", b =>
-                {
-                    b.HasOne("BookMyMeal.Models.Domain.Meal", null)
-                        .WithMany()
-                        .HasForeignKey("MealsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BookMyMeal.Models.Domain.Menu", null)
-                        .WithMany()
-                        .HasForeignKey("Menusid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("BookMyMeal.Models.Domain.Department", b =>

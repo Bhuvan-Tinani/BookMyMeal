@@ -12,5 +12,7 @@ namespace BookMyMeal.Data
         public DbSet<Admin> Admin { get; set; }
         public DbSet<Department> Department { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Meal> Meals { get; set; }
+        public DbSet<MealType> MealTypes { get; set; }
     }
 }

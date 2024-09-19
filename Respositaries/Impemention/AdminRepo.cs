@@ -1,4 +1,5 @@
 ﻿using BookMyMeal.Data;
+using BookMyMeal.Models.Domain;
 using BookMyMeal.Respositaries.Interface;
 
 namespace BookMyMeal.Respositaries.Impemention
@@ -11,5 +12,6 @@ namespace BookMyMeal.Respositaries.Impemention
         {
             this._context = _context;
         }
+
     }
 }
