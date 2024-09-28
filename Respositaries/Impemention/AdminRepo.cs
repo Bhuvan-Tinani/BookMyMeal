@@ -13,5 +13,11 @@ namespace BookMyMeal.Respositaries.Impemention
             this._context = _context;
         }
 
+        public async Task<Admin> createAdmin(Admin admin)
+        {
+            await _context.Admin.AddAsync(admin);
+            await _context.SaveChangesAsync();
+            return admin;
+        }
     }
 }

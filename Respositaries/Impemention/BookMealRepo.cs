@@ -11,5 +11,10 @@ namespace BookMyMeal.Respositaries.Impemention
         {
             this._context = _context;
         }
+
+        public void hello(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

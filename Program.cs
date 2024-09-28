@@ -1,4 +1,6 @@
 using BookMyMeal.Data;
+using BookMyMeal.Respositaries.Impemention;
+using BookMyMeal.Respositaries.Interface;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,10 @@ builder.Services.AddDbContext<BookMyMealDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionString"));
 });
+
+builder.Services.AddScoped<IAdminRepo,AdminRepo>();
+builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
+builder.Services.AddScoped<IBookMealRepo, BookMealRepo>();
 
 var app = builder.Build();
 
