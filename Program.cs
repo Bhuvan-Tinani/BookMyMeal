@@ -20,6 +20,7 @@ builder.Services.AddDbContext<BookMyMealDbContext>(options =>
 builder.Services.AddScoped<IAdminRepo,AdminRepo>();
 builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
 builder.Services.AddScoped<IBookMealRepo, BookMealRepo>();
+builder.Services.AddScoped<IDepartmentRepo,DepartmentRepo>();
 
 var app = builder.Build();
 
