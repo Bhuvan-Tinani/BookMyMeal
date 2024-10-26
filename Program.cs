@@ -21,6 +21,7 @@ builder.Services.AddScoped<IAdminRepo,AdminRepo>();
 builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
 builder.Services.AddScoped<IBookMealRepo, BookMealRepo>();
 builder.Services.AddScoped<IDepartmentRepo,DepartmentRepo>();
+builder.Services.AddScoped<IMealMenuRepo,MealMenuRepo>();
 
 var app = builder.Build();
 
