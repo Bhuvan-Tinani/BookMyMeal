@@ -4,6 +4,12 @@ namespace BookMyMeal.Respositaries.Interface
 {
     public interface IMealMenuRepo
     {
-        List<Menu> createAsyncMenus(List<Menu> listMenu); 
+        Task<List<Menu>> createAsyncMenus(List<Menu> listMenu);
+        Task<MealType> GetMealType(int id);
+        Task<Menu> getMenu(int id);
+        Task<Meal> createMealAsync(Meal meal);
+        Task<IEnumerable<Menu>> getAllMenuAsync();
+        Task<IEnumerable<Meal>> getAllMealAsync();
+        Task<Meal?> getMealById(int id);
     }
 }

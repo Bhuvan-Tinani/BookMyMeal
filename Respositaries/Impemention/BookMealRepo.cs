@@ -7,9 +7,9 @@ namespace BookMyMeal.Respositaries.Impemention
     {
         private readonly BookMyMealDbContext _context;
 
-        public BookMealRepo(BookMyMealDbContext _context)
+        public BookMealRepo(BookMyMealDbContext context)
         {
-            this._context = _context;
+            this._context = context;
         }
 
         public void hello(int id)

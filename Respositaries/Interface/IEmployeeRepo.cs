@@ -6,5 +6,6 @@ namespace BookMyMeal.Respositaries.Interface
     {
         Task<Employee> createEmployee(Employee employee);
         Task<Employee?> empLogin(string userName,string password);
+        Task<Employee?> getEmpByIdAsync(Guid id);
     }
 }

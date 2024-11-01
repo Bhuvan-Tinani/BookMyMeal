@@ -9,6 +9,7 @@
         public string Email { get; set; }
         public string Password { get; set; }
         public Department Department { get; set; }
+        public virtual ICollection<BookMeal> BookMeals { get; set; }
 
     }
 }

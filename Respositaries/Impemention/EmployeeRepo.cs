@@ -25,5 +25,15 @@ namespace BookMyMeal.Respositaries.Impemention
         {
             return await _context.Employees.FirstOrDefaultAsync(x => x.Email==userName && x.Password == password);
         }
+
+        public async Task<Employee?> getEmpByIdAsync(Guid id)
+        {
+            var emp = await _context.Employees.Include(x=>x.Department).FirstOrDefaultAsync(x => x.Id == id);
+            if(emp is null)
+            {
+                return null;
+            }
+            return emp;
+        }
     }
 }

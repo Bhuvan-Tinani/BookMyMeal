@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookMyMeal.Migrations
 {
     [DbContext(typeof(BookMyMealDbContext))]
-    [Migration("20240919090431_meal and menu relationship")]
-    partial class mealandmenurelationship
+    [Migration("20241029083321_bookmeal table added")]
+    partial class bookmealtableadded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,21 @@ namespace BookMyMeal.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("BookMealMeal", b =>
+                {
+                    b.Property<Guid>("BookMealid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("MealsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BookMealid", "MealsId");
+
+                    b.HasIndex("MealsId");
+
+                    b.ToTable("BookMealMeal");
+                });
 
             modelBuilder.Entity("BookMyMeal.Models.Domain.Admin", b =>
                 {
@@ -41,6 +56,35 @@ namespace BookMyMeal.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Admin");
+                });
+
+            modelBuilder.Entity("BookMyMeal.Models.Domain.BookMeal", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("bookingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("numberOfMeal")
+                        .HasColumnType("int");
+
+                    b.Property<double>("payment")
+                        .HasColumnType("float");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("BookMeals");
                 });
 
             modelBuilder.Entity("BookMyMeal.Models.Domain.Department", b =>
@@ -102,6 +146,9 @@ namespace BookMyMeal.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<Guid?>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("day")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -121,6 +168,8 @@ namespace BookMyMeal.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("mealTypeid");
 
@@ -176,6 +225,28 @@ namespace BookMyMeal.Migrations
                     b.ToTable("MealMenu");
                 });
 
+            modelBuilder.Entity("BookMealMeal", b =>
+                {
+                    b.HasOne("BookMyMeal.Models.Domain.BookMeal", null)
+                        .WithMany()
+                        .HasForeignKey("BookMealid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookMyMeal.Models.Domain.Meal", null)
+                        .WithMany()
+                        .HasForeignKey("MealsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BookMyMeal.Models.Domain.BookMeal", b =>
+                {
+                    b.HasOne("BookMyMeal.Models.Domain.Employee", null)
+                        .WithMany("BookMeals")
+                        .HasForeignKey("EmployeeId");
+                });
+
             modelBuilder.Entity("BookMyMeal.Models.Domain.Employee", b =>
                 {
                     b.HasOne("BookMyMeal.Models.Domain.Department", "Department")
@@ -189,6 +260,10 @@ namespace BookMyMeal.Migrations
 
             modelBuilder.Entity("BookMyMeal.Models.Domain.Meal", b =>
                 {
+                    b.HasOne("BookMyMeal.Models.Domain.Employee", null)
+                        .WithMany("Meals")
+                        .HasForeignKey("EmployeeId");
+
                     b.HasOne("BookMyMeal.Models.Domain.MealType", "mealType")
                         .WithMany("Meal")
                         .HasForeignKey("mealTypeid")
@@ -216,6 +291,13 @@ namespace BookMyMeal.Migrations
             modelBuilder.Entity("BookMyMeal.Models.Domain.Department", b =>
                 {
                     b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("BookMyMeal.Models.Domain.Employee", b =>
+                {
+                    b.Navigation("BookMeals");
+
+                    b.Navigation("Meals");
                 });
 
             modelBuilder.Entity("BookMyMeal.Models.Domain.MealType", b =>
