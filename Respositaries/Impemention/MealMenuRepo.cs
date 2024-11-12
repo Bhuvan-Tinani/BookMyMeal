@@ -55,6 +55,11 @@ namespace BookMyMeal.Respositaries.Impemention
             return unusedDays;
         }
 
+        public async Task<Meal?> getMealByDay(string day)
+        {
+            return await _context.Meals.Include(x => x.mealType)
+                .Include(x => x.Menus).FirstOrDefaultAsync(x => x.day.Equals(day));
+        }
 
         public async Task<Meal?> getMealById(int id)
         {

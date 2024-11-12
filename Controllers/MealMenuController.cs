@@ -222,5 +222,35 @@ namespace BookMyMeal.Controllers
             };
             return Ok(response);
         }
+
+        [HttpGet]
+        [Route("Meal/{mealDay}")]
+        public async Task<IActionResult> getMealByDay([FromRoute] string mealDay)
+        {
+            var meal=await mealMenuRepo.getMealByDay(mealDay);
+            if (meal is null)
+            {
+                return NotFound();
+            }
+            var response = new MealDTO()
+            {
+                Id = meal.Id,
+                name = meal.name,
+                description = meal.description,
+                price = meal.price,
+                day = meal.day,
+                mealType = new MealTypeDTO()
+                {
+                    id = meal.mealType.id,
+                    type = meal.mealType.type
+                },
+                Menus = meal.Menus.Select(menu => new MenuDTO()
+                {
+                    id = menu.id,
+                    name = menu.name
+                }).ToList()
+            };
+            return Ok(response);
+        }
     }
 }
