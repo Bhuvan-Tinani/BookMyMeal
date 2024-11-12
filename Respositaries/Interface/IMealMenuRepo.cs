@@ -11,5 +11,7 @@ namespace BookMyMeal.Respositaries.Interface
         Task<IEnumerable<Menu>> getAllMenuAsync();
         Task<IEnumerable<Meal>> getAllMealAsync();
         Task<Meal?> getMealById(int id);
+        Task<IEnumerable<string>> getDayByMealWhichNotUsed();
+        Task<Meal?> updateMeal(Meal meal);
     }
 }

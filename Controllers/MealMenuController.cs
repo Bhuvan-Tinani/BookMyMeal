@@ -134,5 +134,93 @@ namespace BookMyMeal.Controllers
             }
             return Ok(response);
         }
+
+        [HttpGet]
+        [Route("Meal/DayNotUsed")]
+        public async Task<IActionResult> getDayThatAreNotUsed()
+        {
+            var unusedDays = await mealMenuRepo.getDayByMealWhichNotUsed();
+
+            return Ok(unusedDays);
+        }
+
+        [HttpPut]
+        [Route("Meal/{mealId:int}")]
+        public async Task<IActionResult> editMealData([FromRoute]int mealId, UpdateMealRequestDTO request)
+        {
+            var mealType = await mealMenuRepo.GetMealType(request.mealTypeId);
+            var meal = new Meal()
+            {
+                Id= mealId,
+                name = request.name,
+                description = request.description,
+                price = request.price,
+                day = request.day,
+                mealType = mealType,
+                Menus = new List<Menu>(),
+            };
+            foreach (var menuId in request.menuId)
+            {
+                var existingMenu = await mealMenuRepo.getMenu(menuId);
+                if (existingMenu is not null)
+                {
+                    meal.Menus.Add(existingMenu);
+                }
+            }
+            meal = await mealMenuRepo.updateMeal(meal);
+            if(meal is null)
+            {
+                return NotFound();
+            }
+            var response = new MealDTO()
+            {
+                Id = meal.Id,
+                name = meal.name,
+                description = meal.description,
+                price = meal.price,
+                day = meal.day,
+                mealType = new MealTypeDTO()
+                {
+                    id = meal.mealType.id,
+                    type = meal.mealType.type
+                },
+                Menus = meal.Menus.Select(menu => new MenuDTO()
+                {
+                    id = menu.id,
+                    name = menu.name
+                }).ToList()
+            };
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("Meal/{mealId:int}")]
+        public async Task<IActionResult> getMealById([FromRoute] int mealId)
+        {
+            var meal=await mealMenuRepo.getMealById(mealId);
+            if(meal is null)
+            {
+                return NotFound();
+            }
+            var response = new MealDTO()
+            {
+                Id = meal.Id,
+                name = meal.name,
+                description = meal.description,
+                price = meal.price,
+                day = meal.day,
+                mealType = new MealTypeDTO()
+                {
+                    id = meal.mealType.id,
+                    type = meal.mealType.type
+                },
+                Menus = meal.Menus.Select(menu => new MenuDTO()
+                {
+                    id = menu.id,
+                    name = menu.name
+                }).ToList()
+            };
+            return Ok(response);
+        }
     }
 }

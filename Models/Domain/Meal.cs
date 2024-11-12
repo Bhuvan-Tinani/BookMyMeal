@@ -18,7 +18,7 @@ namespace BookMyMeal.Models.Domain
         public MealType mealType { get; set; }
         [Required]
         public virtual ICollection<Menu> Menus { get; set; }
-        public virtual ICollection<BookMeal> BookMeal { get; set; }
+        public virtual ICollection<BookedMealDetails> BookedMealDetails { get; set; }
 
     }
 }

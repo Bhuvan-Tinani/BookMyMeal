@@ -6,9 +6,9 @@
         public DateTime bookingDate{ get; set; }
         public string Note{ get; set; }
         public double payment { get; set; }
-        public int numberOfMeal{ get; set; }
+        public string Status { get; set; }
         public Employee employee { get; set; }
-        public virtual ICollection<Meal> Meals { get; set; }
+        public virtual ICollection<BookedMealDetails> BookedMealDetails { get; set; }
 
     }
 }

@@ -40,6 +40,22 @@ namespace BookMyMeal.Respositaries.Impemention
             return await _context.Menu.ToListAsync();
         }
 
+        public async Task<IEnumerable<string>> getDayByMealWhichNotUsed()
+        {
+            // List of all days of the week
+            var allDays = new List<string> { "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday" };
+
+            var usedDays = await _context.Meals
+                                        .Select(m => m.day)
+                                        .Distinct()  
+                                        .ToListAsync();
+
+            var unusedDays = allDays.Except(usedDays).ToList();
+
+            return unusedDays;
+        }
+
+
         public async Task<Meal?> getMealById(int id)
         {
             return await _context.Meals.Include(x=>x.mealType)
@@ -54,6 +70,18 @@ namespace BookMyMeal.Respositaries.Impemention
         public async Task<Menu> getMenu(int id)
         {
             return await _context.Menu.FirstOrDefaultAsync(x => x.id == id);
+        }
+
+        public async Task<Meal?> updateMeal(Meal meal)
+        {
+            var existingMeal = await _context.Meals.FirstOrDefaultAsync(x=>x.Id==meal.Id);
+            if(existingMeal is null)
+            {
+                return null;
+            }
+            _context.Entry(existingMeal).CurrentValues.SetValues(meal);
+            await _context.SaveChangesAsync();
+            return meal;
         }
     }
 }

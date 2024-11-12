@@ -6,8 +6,8 @@
         public DateTime bookingDate { get; set; }
         public string Note { get; set; }
         public double payment { get; set; }
-        public int numberOfMeal { get; set; }
+        public string Status { get; set; }
         public EmployeeDTO employee { get; set; }
-        public List<MealDTO> meals { get; set; }=new List<MealDTO>();
+        public List<BookedMealDetailsDTO> BookedMealDetails { get; set; } = new List<BookedMealDetailsDTO>();
     }
 }

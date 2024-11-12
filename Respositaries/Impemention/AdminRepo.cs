@@ -1,6 +1,7 @@
 ﻿using BookMyMeal.Data;
 using BookMyMeal.Models.Domain;
 using BookMyMeal.Respositaries.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookMyMeal.Respositaries.Impemention
 {
@@ -18,6 +19,12 @@ namespace BookMyMeal.Respositaries.Impemention
             await _context.Admin.AddAsync(admin);
             await _context.SaveChangesAsync();
             return admin;
+        }
+
+        public async Task<Guid?> getAdminId(string username)
+        {
+            var admin= await _context.Admin.FirstOrDefaultAsync(x=> x.Username == username);
+            return admin?.Id;
         }
     }
 }

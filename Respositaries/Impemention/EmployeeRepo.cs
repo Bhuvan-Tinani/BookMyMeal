@@ -35,5 +35,11 @@ namespace BookMyMeal.Respositaries.Impemention
             }
             return emp;
         }
+
+        public async Task<Guid?> getEmpId(string userName)
+        {
+            var emp = await _context.Employees.FirstOrDefaultAsync(x => x.Email == userName);
+            return emp.Id;
+        }
     }
 }
