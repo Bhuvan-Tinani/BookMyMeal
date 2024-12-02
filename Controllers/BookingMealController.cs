@@ -224,6 +224,66 @@ namespace BookMyMeal.Controllers
             return Ok(response);
         }
 
+        [HttpDelete]
+        [Route("{id:Guid}/cancel")]
+        public async Task<IActionResult> CancelBookingByBookingId([FromRoute] Guid id)
+        {
+            // Attempt to cancel the booking
+            var bookmeal = await bookingMealRepo.cancelBooking(id);
+
+            // Check if the booking exists
+            if (bookmeal == null)
+            {
+                return NotFound(new { Message = "Booking not found." });
+            }
+            var response = new BookMealDTO()
+            {
+                id = bookmeal.id,
+                bookingDate = bookmeal.bookingDate,
+                Note = bookmeal.Note,
+                payment = bookmeal.payment,
+                Status = bookmeal.Status,
+                employee = new EmployeeDTO
+                {
+                    Id = bookmeal.employee.Id,
+                    FirstName = bookmeal.employee.FirstName,
+                    LastName = bookmeal.employee.LastName,
+                    Phone = bookmeal.employee.Phone,
+                    Email = bookmeal.employee.Email,
+                    Department = new DepartmentDTO
+                    {
+                        Id = bookmeal.employee.Department.Id,
+                        DeptName = bookmeal.employee.Department.DeptName
+                    }
+                },
+                BookedMealDetails = bookmeal.BookedMealDetails.Select(bmd => new BookedMealDetailsDTO
+                {
+                    Id = bmd.Id,
+                    Date = bmd.Date,
+                    NumberOfMeal = bmd.NumberOfMeal,
+                    Meal = new MealDTO
+                    {
+                        Id = bmd.Meal.Id,
+                        name = bmd.Meal.name,
+                        day = bmd.Meal.day,
+                        description = bmd.Meal.description,
+                        price = bmd.Meal.price,
+                        mealType = new MealTypeDTO
+                        {
+                            id = bmd.Meal.mealType.id,
+                            type = bmd.Meal.mealType.type
+                        },
+                        Menus = bmd.Meal.Menus.Select(menu => new MenuDTO
+                        {
+                            id = menu.id,
+                            name = menu.name
+                        }).ToList()
+                    }
+                }).ToList()
+            };
+
+            return Ok(response);
+        }
 
     }
 }

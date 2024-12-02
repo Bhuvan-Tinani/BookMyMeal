@@ -7,5 +7,6 @@ namespace BookMyMeal.Respositaries.Interface
         Task<BookMeal> createBookMealAsync(BookMeal bookMeal);
         Task<IEnumerable<BookMeal>> getBookMyMeal();
         Task<IEnumerable<BookMeal>> getBookMyMealByEmpId(Guid id);
+        Task<BookMeal?> cancelBooking(Guid bookId);
     }
 }

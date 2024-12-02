@@ -14,6 +14,30 @@ namespace BookMyMeal.Respositaries.Impemention
             this._context = _context;
         }
 
+        public async Task<BookMeal?> cancelBooking(Guid bookId)
+        {
+            var booking = await _context.BookMeals
+            .Include(bm => bm.employee)
+                    .ThenInclude(bm => bm.Department)
+                .Include(bm => bm.BookedMealDetails)
+                            .ThenInclude(bmd => bmd.Meal)
+                                .ThenInclude(meal => meal.mealType)
+                .Include(bm => bm.BookedMealDetails)
+                            .ThenInclude(bmd => bmd.Meal)
+                            .ThenInclude(meal => meal.Menus)
+            .FirstOrDefaultAsync(b => b.id == bookId);
+
+            if (booking == null)
+            {
+                return null;
+            }
+            booking.Status = "canceled";
+            await _context.SaveChangesAsync();
+
+            // Return the updated booking
+            return booking;
+        }
+
         public async Task<BookMeal> createBookMealAsync(BookMeal bookMeal)
         {
             await _context.BookMeals.AddAsync(bookMeal);
