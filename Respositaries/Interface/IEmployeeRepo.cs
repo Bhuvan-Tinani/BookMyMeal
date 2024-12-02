@@ -9,5 +9,6 @@ namespace BookMyMeal.Respositaries.Interface
         Task<Employee?> getEmpByIdAsync(Guid id);
 
         Task<Guid?> getEmpId(string userName); 
+        Task<IEnumerable<Employee>> getAllEmployees();
     }
 }

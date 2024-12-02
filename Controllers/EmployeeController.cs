@@ -70,6 +70,57 @@ namespace BookMyMeal.Controllers
         }
 
         //GETallemployee
-        //getemployeebyid
+        [HttpGet]
+        public async Task<IActionResult> employeeLogin()
+        {
+            var employes=await employeeRepo.getAllEmployees();
+            var response=new List<EmployeeDTO>();
+            foreach(var employee in employes)
+            {
+                response.Add(new EmployeeDTO()
+                {
+                    Id = employee.Id,
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
+                    Phone = employee.Phone,
+                    Email = employee.Email,
+                    Password = employee.Password,
+                    Department = new DepartmentDTO()
+                    {
+                        DeptName = employee.Department.DeptName,
+                        Id = employee.Department.Id
+                    }
+                });
+            }
+            return Ok(response);
+        }
+
+        //getEmpById
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> getEmpByid([FromRoute] Guid id)
+        {
+            var employee = await employeeRepo.getEmpByIdAsync(id);
+            if(employee is null)
+            {
+                return NotFound();
+            }
+            var response = new EmployeeDTO()
+            {
+                Id = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Phone = employee.Phone,
+                Email = employee.Email,
+                Password = employee.Password,
+                Department = new DepartmentDTO()
+                {
+                    Id = employee.Department.Id,
+                    DeptName = employee.Department.DeptName,
+                }
+            };
+            return Ok(response);
+
+        }
     }
 }
